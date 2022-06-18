@@ -18,7 +18,11 @@ class TicTacToe
 
   WIN_COMBOS = [
     [1,2,3],
-    []
+    [1,4,7],
+    [3,6,9],
+    [1,5,9],
+    [3,5,7],
+    [7,8,9]
   ]
   attr_accessor :board_positions, :win, :winner
 
@@ -34,9 +38,13 @@ class TicTacToe
   private 
   def game 
     
+    #array storing positions that are available for player to choose
     available_positions = [1,2,3,4,5,6,7,8,9]
+    #keeps track of player turn (0 is p1, 1 is p2)
+    turn_tracker = 0;
     
     def show_board(board)
+      #displays the board to the screen
       row1 = "| #{board[0]} | #{board[1]} | #{board[2]} |"
       row2 = "| #{board[3]} | #{board[4]} | #{board[5]} |"
       row3 = "| #{board[6]} | #{board[7]} | #{board[8]} |"
@@ -50,9 +58,48 @@ class TicTacToe
       p "|-----------|"
     end
 
+    def make_choice(available_positions, turn_tracker)
+      if turn_tracker == 0
+        p "#{@p1.name.chomp}, what is your choice?"
+        choice = gets
+
+        if available_positions.index(choice.chomp.to_i)
+          available_positions[(choice.to_i)-1] = 'X'
+        else
+          p 'That position is already taken, or is not 1-9! Try again.'
+          make_choice(available_positions, turn_tracker)
+        end
+
+      else
+        p "#{@p2.name.chomp}, what is your choice?"
+        choice = gets
+        if available_positions.index(choice.chomp.to_i)
+          available_positions[(choice.to_i)-1] = 'O'
+        else
+          p 'That position is already taken or is not 1-9! Try again.'
+          make_choice(available_positions, turn_tracker)
+        end
+      end
+    end
+
     until win
       show_board(available_positions)
-      @win = true
+      if turn_tracker == 0
+        make_choice(available_positions, turn_tracker)
+        if check_win == true 
+          @win = true
+          @winner = p1
+        end
+        turn_tracker = 1
+      else
+        make_choice(available_positions, turn_tracker)
+        if check_win == true 
+          @win = true
+          @winner = p2
+        end
+        turn_tracker = 0
+      end
+      
     end
 
   end
