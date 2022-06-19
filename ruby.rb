@@ -4,6 +4,7 @@
 #while win is false
 #grid sjhoulf  d be an array odf positions so we can replace a 
 #fixed posv w/ x or o
+require 'colorize'
 
 class Player
   attr_reader :name
@@ -17,14 +18,16 @@ end
 class TicTacToe
 
   WIN_COMBOS = [
-    [1,2,3],
-    [1,4,7],
-    [3,6,9],
-    [1,5,9],
-    [3,5,7],
-    [7,8,9]
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [2,5,8],
+    [0,4,8],
+    [2,4,6]
   ]
   attr_accessor :board_positions, :win, :winner
+  attr_reader :p1, :p2
 
   def initialize(p1, p2)
     @p1 = p1 
@@ -58,6 +61,7 @@ class TicTacToe
       p "|-----------|"
     end
 
+
     def make_choice(available_positions, turn_tracker)
       if turn_tracker == 0
         p "#{@p1.name.chomp}, what is your choice?"
@@ -82,20 +86,39 @@ class TicTacToe
       end
     end
 
+    def check_win(board)
+      board.each_with_index do |val, index|
+        WIN_COMBOS.each do |first, second, third|
+
+          if (board[first] == board[second]) && (board[second] == board[third])
+           return true
+          else
+          end
+
+        end
+      end
+    end
+
+    def announce_winner(winner)
+      puts "Congratulions, #{winner}! You have won the match.".red
+    end
+
     until win
       show_board(available_positions)
       if turn_tracker == 0
         make_choice(available_positions, turn_tracker)
-        if check_win == true 
+        if check_win(available_positions) == true 
           @win = true
-          @winner = p1
+          @winner = @p1.name.chomp
+          announce_winner(@winner)
         end
         turn_tracker = 1
       else
         make_choice(available_positions, turn_tracker)
-        if check_win == true 
+        if check_win(available_positions) == true 
           @win = true
-          @winner = p2
+          @winner = @p2.name.chomp
+          announce_winner(@winner)
         end
         turn_tracker = 0
       end
