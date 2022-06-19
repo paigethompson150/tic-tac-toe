@@ -1,9 +1,3 @@
-#class storing instance vars name and an array of positions
-#if class contakns x,x,x, they win.
-# set var for win set to false
-#while win is false
-#grid sjhoulf  d be an array odf positions so we can replace a 
-#fixed posv w/ x or o
 require 'colorize'
 
 class Player
